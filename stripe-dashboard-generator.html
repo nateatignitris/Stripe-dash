@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Dashboard Generator - Fake Screenshot Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .controls h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1a1f36;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #635bff;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: #635bff;
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 91, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #5851ea;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 91, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* Stripe Dashboard Replica */
+        #stripe-dashboard {
+            background: #f7f9fc;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e3e8ee;
+            padding: 24px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            background: #635bff;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1f36;
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #697386;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: #f7f9fc;
+            color: #1a1f36;
+        }
+
+        .nav-item.active {
+            background: rgba(99, 91, 255, 0.08);
+            color: #635bff;
+            border-right: 2px solid #635bff;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 32px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1f36;
+            margin-bottom: 8px;
+        }
+
+        .date-range {
+            color: #697386;
+            font-size: 14px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #e3e8ee;
+            border-radius: 12px;
+            padding: 24px;
+            transition: box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #697386;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1f36;
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .metric-change.positive {
+            color: #0fa958;
+        }
+
+        .metric-change.negative {
+            color: #cd3d64;
+        }
+
+        .chart-section {
+            background: white;
+            border: 1px solid #e3e8ee;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1f36;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #697386;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            padding: 20px 0;
+            border-top: 1px solid #e3e8ee;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #635bff 0%, #8b83ff 100%);
+            border-radius: 4px 4px 0 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .payments-section {
+            background: white;
+            border: 1px solid #e3e8ee;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e3e8ee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1f36;
+        }
+
+        .payment-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e3e8ee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+
+        .payment-item:hover {
+            background: #f7f9fc;
+        }
+
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .payment-email {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1f36;
+        }
+
+        .payment-date {
+            font-size: 12px;
+            color: #697386;
+        }
+
+        .payment-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1f36;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-succeeded {
+            background: rgba(15, 169, 88, 0.1);
+            color: #0fa958;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e3e8ee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 Stripe Dashboard Generator</h1>
+            <p>Create realistic Stripe dashboard screenshots in seconds</p>
+        </div>
+
+        <div class="controls">
+            <h2>⚙️ Customize Your Dashboard</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Gross Volume ($)</label>
+                    <input type="number" id="grossVolume" value="16855.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Succeeded ($)</label>
+                    <input type="number" id="succeeded" value="15480.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Failed ($)</label>
+                    <input type="number" id="failed" value="150.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <input type="text" id="dateRange" value="Mar 5, 2025 - Today">
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="updateDashboard()">📊 Update Dashboard</button>
+                <button class="btn-primary" onclick="exportDashboard()">💾 Export PNG</button>
+                <button class="btn-secondary" onclick="randomize()">🎲 Randomize Data</button>
+            </div>
+        </div>
+
+        <div id="stripe-dashboard">
+            <div class="dashboard-container">
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-logo">S</div>
+                        <div class="sidebar-title">Dashboard</div>
+                    </div>
+                    <nav>
+                        <div class="nav-item">
+                            <span>🏠</span> Home
+                        </div>
+                        <div class="nav-item active">
+                            <span>💳</span> Payments
+                        </div>
+                        <div class="nav-item">
+                            <span>👥</span> Customers
+                        </div>
+                        <div class="nav-item">
+                            <span>📊</span> Reports
+                        </div>
+                        <div class="nav-item">
+                            <span>⚙️</span> Settings
+                        </div>
+                    </nav>
+                </aside>
+
+                <main class="main-content">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Payments</h1>
+                        <div class="date-range" id="displayDateRange">Mar 5, 2025 - Today</div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Gross volume</div>
+                            <div class="metric-value" id="displayGrossVolume">$16,855.00</div>
+                            <div class="metric-change positive">+12.5% from last period</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Succeeded</div>
+                            <div class="metric-value" id="displaySucceeded">$15,480.00</div>
+                            <div class="metric-change positive">+8.3% from last period</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Failed</div>
+                            <div class="metric-value" id="displayFailed">$150.00</div>
+                            <div class="metric-change negative">-2.1% from last period</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <div class="chart-title">Payment volume</div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #635bff;"></span>
+                                    Gross volume
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container" id="chartContainer">
+                            <!-- Chart bars will be generated here -->
+                        </div>
+                    </div>
+
+                    <div class="payments-section">
+                        <div class="section-header">
+                            <div class="section-title">Recent payments</div>
+                            <div style="font-size: 13px; color: #697386;">Last 24 hours</div>
+                        </div>
+                        <div id="paymentsList">
+                            <!-- Payment items will be generated here -->
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample payment data
+        const samplePayments = [
+            { email: 'customer@example.com', amount: 299.00, date: '2 hours ago' },
+            { email: 'john.smith@company.com', amount: 1450.00, date: '5 hours ago' },
+            { email: 'sarah.johnson@startup.io', amount: 89.99, date: '8 hours ago' },
+            { email: 'mike.wilson@business.com', amount: 599.00, date: '12 hours ago' },
+            { email: 'emily.brown@enterprise.com', amount: 2100.00, date: '18 hours ago' }
+        ];
+
+        function formatCurrency(value) {
+            return '$' + parseFloat(value).toLocaleString('en-US', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+        }
+
+        function generateChart() {
+            const chartContainer = document.getElementById('chartContainer');
+            chartContainer.innerHTML = '';
+            
+            // Generate 30 bars with random heights
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                const height = Math.random() * 80 + 20; // Random height between 20-100%
+                bar.style.height = height + '%';
+                chartContainer.appendChild(bar);
+            }
+        }
+
+        function generatePayments() {
+            const paymentsList = document.getElementById('paymentsList');
+            paymentsList.innerHTML = '';
+            
+            samplePayments.forEach(payment => {
+                const item = document.createElement('div');
+                item.className = 'payment-item';
+                item.innerHTML = `
+                    <div class="payment-info">
+                        <div class="payment-email">${payment.email}</div>
+                        <div class="payment-date">${payment.date}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="payment-amount">${formatCurrency(payment.amount)}</div>
+                        <span class="status-badge status-succeeded">
+                            <span class="status-dot"></span>
+                            Succeeded
+                        </span>
+                    </div>
+                `;
+                paymentsList.appendChild(item);
+            });
+        }
+
+        function updateDashboard() {
+            const grossVolume = document.getElementById('grossVolume').value;
+            const succeeded = document.getElementById('succeeded').value;
+            const failed = document.getElementById('failed').value;
+            const dateRange = document.getElementById('dateRange').value;
+
+            document.getElementById('displayGrossVolume').textContent = formatCurrency(grossVolume);
+            document.getElementById('displaySucceeded').textContent = formatCurrency(succeeded);
+            document.getElementById('displayFailed').textContent = formatCurrency(failed);
+            document.getElementById('displayDateRange').textContent = dateRange;
+        }
+
+        function randomize() {
+            const randomGross = (Math.random() * 50000 + 5000).toFixed(2);
+            const randomSucceeded = (randomGross * 0.92).toFixed(2);
+            const randomFailed = (randomGross * 0.01).toFixed(2);
+            
+            document.getElementById('grossVolume').value = randomGross;
+            document.getElementById('succeeded').value = randomSucceeded;
+            document.getElementById('failed').value = randomFailed;
+            
+            updateDashboard();
+            generateChart();
+        }
+
+        async function exportDashboard() {
+            const dashboard = document.getElementById('stripe-dashboard');
+            
+            try {
+                const canvas = await html2canvas(dashboard, {
+                    scale: 2,
+                    backgroundColor: '#f7f9fc',
+                    logging: false,
+                    width: dashboard.offsetWidth,
+                    height: dashboard.offsetHeight
+                });
+                
+                const link = document.createElement('a');
+                link.download = `stripe-dashboard-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                alert('✅ Screenshot exported successfully!');
+            } catch (error) {
+                console.error('Export failed:', error);
+                alert('❌ Export failed. Please try again.');
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            generateChart();
+            generatePayments();
+        };
+    </script>
+</body>
+</html>
