@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --foreground-rgb: 26, 31, 54;
+    --background-start-rgb: 247, 249, 252;
+    --background-end-rgb: 247, 249, 252;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-start-rgb));
+    font-family: 'Inter', sans-serif;
+}
+
+@layer components {
+    .stripe-card {
+        @apply bg-white border border-stripe-border rounded-lg shadow-sm;
+    }
+
+    .status-badge-succeeded {
+        @apply bg-[#e3e8ee] text-[#1a1f36] px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wider;
+    }
+}
